@@ -280,7 +280,13 @@ test("registers without overwriting user config and enables public access withou
   await plugin.config(cfg);
   assert.equal(cfg.provider["opencode-zen-free"].name, "My name");
   assert.deepEqual(await plugin.auth.methods[0].authorize(), { type: "success", key: "public" });
+  assert.deepEqual(await plugin.auth.methods[0].authorize("public-2"), {
+    type: "success",
+    key: "public-2",
+  });
   assert.deepEqual(await plugin.auth.loader(async () => undefined), {});
+  const loaderWithAlias = await plugin.auth.loader(async () => ({ type: "api", key: "public-2" }));
+  assert.equal(loaderWithAlias.apiKey, "public");
   await assert.rejects(
     plugin.auth.loader(async () => ({ type: "api", key: "paid-secret" })),
     /public/i,

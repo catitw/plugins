@@ -61,7 +61,7 @@ function httpURL(value) {
 }
 
 function requirePublic(auth) {
-  if (auth?.type !== "api" || auth.key !== "public") {
+  if (auth?.type !== "api" || !auth.key || !auth.key.startsWith("public")) {
     throw new Error(
       "OpenCode Zen Free uses the public credential. Enable its free access login method.",
     );
@@ -257,10 +257,10 @@ async function server(_input, options = {}) {
       methods: [
         {
           type: "api",
-          label: "Zen 免费访问（密钥填 public；自己的 OpenCode Key 请加到内置的 OpenCode Zen）",
+          label: "Zen 免费访问（密钥填 public；自己的 OpenCode Key 请加到内置的 OpenCode Zen；多账号代理填 public-1 等别名）",
           placeholder: "public",
-          async authorize() {
-            return { type: "success", key: "public" };
+          async authorize(key) {
+            return { type: "success", key: key?.trim?.() || "public" };
           },
         },
       ],

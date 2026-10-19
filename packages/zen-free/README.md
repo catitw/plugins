@@ -28,6 +28,12 @@ own Zen keys go in magpie's built-in OpenCode Zen provider (or OpenCode's
 The credential is kept in OpenCode's `auth.json` or magpie's
 `plugin-auth.json`.
 
+To configure multiple free accounts with independent proxies (for example,
+routing requests across different network egresses), enter distinct aliases
+starting with `public` (such as `public-1`, `public-2`). Magpie maintains
+each alias as a separate account with its own proxy selection, while requests
+continue to authenticate upstream using the public free tier.
+
 ## Models
 
 The plugin discovers Zen's current free models, including their context
